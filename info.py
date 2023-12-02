@@ -57,7 +57,7 @@ def get_repo_info(file_path):
     return repo_array
 
 
-repo_array = get_repo_info("packages_official.json")
+repo_array = get_repo_info("packages.json")
 
 
 import csv
