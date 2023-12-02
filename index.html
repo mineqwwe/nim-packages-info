@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repo Info</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      cursor: pointer;
+    }
+
+    .arrow {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <table id="repoTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th onclick="sortTable('stars', 'number')">Stars <span class="arrow" id="starsArrow"></span></th>
+        <th onclick="sortTable('update_time', 'date')">Update Time <span class="arrow" id="update_timeArrow"></span></th>
+        <th>Description</th>
+        <th>URLs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 表格内容将通过JavaScript动态生成 -->
+    </tbody>
+  </table>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+  <script>
+    var repoData;
+
+    // 使用Fetch API获取repo_info.csv文件内容并解析
+    fetch('repo_info.csv')
+      .then(response => response.text())
+      .then(csv => {
+        Papa.parse(csv, {
+          header: true,
+          dynamicTyping: true,
+          complete: function (results) {
+            repoData = results.data;
+            populateTable(repoData);
+          }
+        });
+      })
+      .catch(error => console.error('Error:', error));
+
+    function populateTable(data) {
+      var tbody = document.querySelector("#repoTable tbody");
+      tbody.innerHTML = "";
+      data.forEach(function (repo) {
+        var row = "<tr><td>" + repo.name + "</td><td>"+ repo.stars + "</td><td>" + repo.update_time + "</td><td>" + repo.description + "</td><td><a href='" + repo.urls + "' target='_blank'>" + repo.urls + "</a></td></tr>";
+        tbody.innerHTML += row;
+      });
+    }
+
+    function sortTable(column, type) {
+      var arrow = document.getElementById(column + "Arrow");
+      // 清空所有箭头
+      document.querySelectorAll(".arrow").forEach(item => item.innerHTML = "");
+
+      // 切换箭头方向
+      if (!arrow.dataset.order || arrow.dataset.order === "desc") {
+        arrow.innerHTML = " ▲";
+        arrow.dataset.order = "asc";
+        if (type === 'number') {
+          repoData.sort((a, b) => a[column] - b[column]);
+        } else if (type === 'date') {
+          repoData.sort((a, b) => new Date(a[column]) - new Date(b[column]));
+        }
+      } else {
+        arrow.innerHTML = " ▼";
+        arrow.dataset.order = "desc";
+        if (type === 'number') {
+          repoData.sort((a, b) => b[column] - a[column]);
+        } else if (type === 'date') {
+          repoData.sort((a, b) => new Date(b[column]) - new Date(a[column]));
+        }
+      }
+      populateTable(repoData);
+    }
+  </script>
+</body>
+
+</html>
