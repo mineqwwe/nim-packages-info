@@ -43,7 +43,7 @@ jobs:
       - name: Download official.json
         run: |
           curl -O https://raw.githubusercontent.com/nim-lang/packages/master/packages.json
-          sed -i 's/"url": "https:\/\/github.com\/maleyva1\/whisper",$/"url": "https:\/\/github.com\/maleyva1\/whisper"/' packages.json
+          sed -i '$-1,$ s/,$//' packages.json
       - name: Generate repo_info.csv
         env:
           GET_NIM: ${{ secrets.GET_NIM }}
