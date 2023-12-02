@@ -1,12 +1,12 @@
 import json
 import requests
 import datetime
-
+import time
 
 def get_github_repo_info(repo_url):
     # 提取仓库名称和作者
-    print("repo_url: ",repo_url)
     print("\n")
+    print("repo_url: ",repo_url)
     repo_url = repo_url.rstrip("/")
     parts = repo_url.split('/')
     username = parts[-2]
@@ -78,6 +78,6 @@ with open('repo_info.csv', 'w', newline='', encoding='utf-8') as file:
             urls = "https://github.com/Nimberite-Development/ModernNet"
         description = repo.get("description")
         update_time, stars = get_github_repo_info(urls)
-
+        time.sleep(1)
         # 将每个repo的信息写入CSV文件
         writer.writerow([name, stars, update_time, description, urls])
