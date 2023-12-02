@@ -43,7 +43,7 @@ jobs:
       - name: Download official.json
         run: |
           curl -O https://raw.githubusercontent.com/nim-lang/packages/master/packages.json
-          sed -i '$s/,$//;N;$s/,$//' packages.json
+          tac package.json | awk 'NR==2{sub(/,$/,"")} NR==3{sub(/,$/,"")} 1' | tac > packages.json
       - name: Generate repo_info.csv
         env:
           GET_NIM: ${{ secrets.GET_NIM }}
