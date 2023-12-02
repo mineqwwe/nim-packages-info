@@ -74,6 +74,8 @@ with open('repo_info.csv', 'w', newline='', encoding='utf-8') as file:
         name = repo.get("name")
         # print(name)
         urls = repo.get("urls")
+        if urls == None:
+            urls = "https://github.com/Nimberite-Development/ModernNet"
         description = repo.get("description")
         update_time, stars = get_github_repo_info(urls)
 
