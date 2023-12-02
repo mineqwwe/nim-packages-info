@@ -2,6 +2,7 @@ import json
 import requests
 import datetime
 import time
+import os
 
 def get_github_repo_info(repo_url):
     # 提取仓库名称和作者
