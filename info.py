@@ -6,7 +6,6 @@ import os
 
 def get_github_repo_info(repo_url):
     # 提取仓库名称和作者
-    print("\n")
     print("repo_url: ",repo_url)
     repo_url = repo_url.rstrip("/")
     parts = repo_url.split('/')
@@ -71,16 +70,20 @@ with open('repo_info.csv', 'w', newline='', encoding='utf-8') as file:
 
     # 写入表头
     writer.writerow(["name", "stars", "update_time", "description", "urls"])
-
+    index = 0
     # 遍历repo_array，并写入每个repo的信息
     for repo in repo_array:
         name = repo.get("name")
         # print(name)
         urls = repo.get("urls")
-        if urls == None:
-            urls = "https://github.com/Nimberite-Development/ModernNet"
         description = repo.get("description")
-        update_time, stars = get_github_repo_info(urls)
-        time.sleep(1)
+        print("index: ",index)
+        index = index + 1
+        if urls is not None:
+            update_time, stars = get_github_repo_info(urls)
+            time.sleep(1)
+        else:
+            update_time = "not_get"
+            stars = "not_get"      
         # 将每个repo的信息写入CSV文件
         writer.writerow([name, stars, update_time, description, urls])
