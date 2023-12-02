@@ -5,6 +5,8 @@ import datetime
 
 def get_github_repo_info(repo_url):
     # 提取仓库名称和作者
+    print("repo_url: ",repo_url)
+    print("\n")
     repo_url = repo_url.rstrip("/")
     parts = repo_url.split('/')
     username = parts[-2]
