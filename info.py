@@ -20,7 +20,7 @@ def get_github_repo_info(repo_url):
     print("api_url: ",api_url)
     api_key = os.environ['GET']
     
-    response = requests.get(api_url，headers={'Authorization': f'token {api_key}'})
+    response = requests.get(api_url,headers={'Authorization': f'token {api_key}'})
     print(response.status_code)
     if response.status_code == 200:
         data = response.json()
